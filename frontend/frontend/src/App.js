@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './App.css'; // Import custom CSS for styling
+import './App.css';
 
 function App() {
     const [jsonInput, setJsonInput] = useState('');
@@ -9,35 +9,35 @@ function App() {
 
     const handleSubmit = async () => {
         try {
-            const result = await axios.post('http://localhost:5078/bfhl', JSON.parse(jsonInput));
+            const parsedData = JSON.parse(jsonInput);
+            console.log("Submitting data:", parsedData);
+
+            const result = await axios.post('https://bajaj-scoi.onrender.com/bfhl', parsedData);
+            console.log("Received response:", result.data);
             setResponse(result.data);
         } catch (error) {
             console.error("Error submitting data", error);
+
+            if (error instanceof SyntaxError) {
+                alert("Invalid JSON format. Please check your input and try again.");
+            }
         }
     };
+
+    const renderResponseItems = (label, items) => (
+        <div className="response-item">
+            <h4>{label}:</h4>
+            <p>{items.join(', ')}</p>
+        </div>
+    );
 
     const renderResponse = () => {
         if (!response) return null;
         return (
             <div className="response-container">
-                {selectedOptions.includes('Numbers') && (
-                    <div className="response-item">
-                        <h4>Numbers:</h4>
-                        <p>{response.numbers.join(', ')}</p>
-                    </div>
-                )}
-                {selectedOptions.includes('Alphabets') && (
-                    <div className="response-item">
-                        <h4>Alphabets:</h4>
-                        <p>{response.alphabets.join(', ')}</p>
-                    </div>
-                )}
-                {selectedOptions.includes('Highest lowercase alphabet') && (
-                    <div className="response-item">
-                        <h4>Highest Lowercase Alphabet:</h4>
-                        <p>{response.highest_lowercase_alphabet.join(', ')}</p>
-                    </div>
-                )}
+                {selectedOptions.includes('Numbers') && renderResponseItems('Numbers', response.numbers)}
+                {selectedOptions.includes('Alphabets') && renderResponseItems('Alphabets', response.alphabets)}
+                {selectedOptions.includes('Highest lowercase alphabet') && renderResponseItems('Highest Lowercase Alphabet', response.highest_lowercase_alphabet)}
             </div>
         );
     };

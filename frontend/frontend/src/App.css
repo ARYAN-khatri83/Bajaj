@@ -1,6 +1,6 @@
 /* General styles */
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Arial', sans-serif;
   background-color: #f4f4f4;
   margin: 0;
   padding: 0;
@@ -11,7 +11,7 @@ body {
 }
 
 .app-container {
-  background-color: #ffffff;
+  background-color: #fff;
   padding: 20px 40px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
